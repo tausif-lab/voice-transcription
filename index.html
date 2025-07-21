@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice Transcription</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .record-section {
+            margin-bottom: 40px;
+        }
+
+        .record-button {
+            background: #ff4757;
+            border: none;
+            color: white;
+            font-size: 18px;
+            padding: 20px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            min-width: 150px;
+        }
+
+        .record-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 71, 87, 0.3);
+        }
+
+        .record-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .record-button.recording {
+            background: #ff3838;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7);
+            }
+            
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 71, 87, 0);
+            }
+            
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 71, 87, 0);
+            }
+        }
+
+        .stop-button {
+            background: #2ed573;
+        }
+
+        .stop-button:hover {
+            box-shadow: 0 10px 20px rgba(46, 213, 115, 0.3);
+        }
+
+        .status {
+            margin: 20px 0;
+            font-size: 16px;
+            color: #666;
+            min-height: 20px;
+        }
+
+        .status.recording {
+            color: #ff4757;
+            font-weight: bold;
+        }
+
+        .status.processing {
+            color: #5352ed;
+            font-weight: bold;
+        }
+
+        .transcription-section {
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .transcription-title {
+            color: #333;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .transcription-result {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 120px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            white-space: pre-wrap;
+        }
+
+        .transcription-result.empty {
+            color: #999;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #5352ed;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #ff4757;
+            background: #ffe3e3;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff4757;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #2196f3;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .instructions p {
+            color: #666;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 AI Voice Transcription</h1>
+        
+        <div class="instructions">
+            <h3>How to use:</h3>
+            <p>1. Click the "Start Recording" button to begin recording your voice<br>
+               2. Speak clearly into your microphone<br>
+               3. Click "Stop Recording" when you're finished<br>
+               4. Wait for the AI to transcribe your speech</p>
+        </div>
+
+        <div class="record-section">
+            <button id="recordButton" class="record-button">Start Recording</button>
+            <button id="stopButton" class="record-button stop-button" disabled>Stop Recording</button>
+        </div>
+
+        <div id="status" class="status">Ready to record</div>
+
+        <div class="transcription-section">
+            <h2 class="transcription-title">Transcription</h2>
+            <div id="transcriptionResult" class="transcription-result empty">
+                Your transcribed text will appear here...
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
